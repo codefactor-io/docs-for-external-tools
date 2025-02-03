@@ -4,4 +4,4 @@ Issue: -
 
 ## Description
 
-This rules sisallows `const enum` expressions.
+This rules disallows `const enum` expressions.
