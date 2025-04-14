@@ -10,7 +10,7 @@ Developers often add comments to code which is not complete or needs review. Mos
 
 Example of **incorrect** code:
 
-```dart
+```go
 // FIXME: this is not a good idea
 // TODO: need code review
 experiment()
@@ -18,7 +18,7 @@ experiment()
 
 Example of **correct** code:
 
-```dart
+```go
 // NOT READY FOR PRIME TIME
 // but too bad, it is not a predefined warning term
 experiment()
