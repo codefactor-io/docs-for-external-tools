@@ -9,3 +9,4 @@ Checks if password is stored in controller when using `http_basic_authenticate_w
 ## Further Reading
 
 * [Brakeman - CheckBasicAuth](https://brakemanscanner.org/docs/warning_types/basic_authentication/)
+* 
