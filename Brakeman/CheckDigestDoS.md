@@ -1,6 +1,6 @@
 Pattern: Digest authentication DoS vulnerability
 
-Issue: -
+Issue: - 
 
 ## Description
 
