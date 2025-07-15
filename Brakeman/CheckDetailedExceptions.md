@@ -1,6 +1,6 @@
 Pattern: Use of detailed exception
 
-Issue: -
+Issue: - 
 
 ## Description
 
