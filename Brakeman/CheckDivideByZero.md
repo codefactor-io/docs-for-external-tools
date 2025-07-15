@@ -1,7 +1,7 @@
 Pattern: Division by zero
 
 Issue: -
-
+ 
 ## Description
 
 Integer division by zero (`0`) in Ruby results in a `ZeroDivisionError` exception.
