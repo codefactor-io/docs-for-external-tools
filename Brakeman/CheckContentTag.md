@@ -23,3 +23,4 @@ content_tag, :tag, body, attribute => value
 ## Further Reading
 
 * [Brakeman - CheckContentTag](https://brakemanscanner.org/docs/warning_types/content_tag/)
+* 
