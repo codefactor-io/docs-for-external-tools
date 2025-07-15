@@ -20,3 +20,4 @@ class boaConstrictor
 ## Further Reading
 
 * [CoffeeLint - camel_case_classes](https://coffeelint.github.io/#options)
+* 
