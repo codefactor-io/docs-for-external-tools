@@ -1,5 +1,5 @@
 Pattern: XML DoS vulnerability
-
+ 
 Issue: -
 
 ## Description
