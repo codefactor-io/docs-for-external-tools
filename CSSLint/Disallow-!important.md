@@ -18,6 +18,7 @@ The following patterns are considered warnings:
 .mybox {
     color: red !important;
 }
+
 ```
 
 ## Further Reading
