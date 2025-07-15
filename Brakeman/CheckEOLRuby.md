@@ -1,5 +1,5 @@
 Pattern: Use of unsupported Ruby version
-
+ 
 Issue: -
 
 ## Description
