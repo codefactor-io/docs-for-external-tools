@@ -1,5 +1,5 @@
 Pattern: Use of `redirect_to` with user input
-
+ 
 Issue: -
 
 ## Description
