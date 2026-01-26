@@ -1,0 +1,71 @@
+Pattern: Stale closure dependency
+
+Issue: -
+
+## Description
+
+Setting state immediately inside an effect forces React to restart the entire render cycle. When you update state in an effect, React must re-render your component, apply changes to the DOM, and then run effects again. This creates an extra render pass that could have been avoided by transforming data directly during render or deriving state from props. Transform data at the top level of your component instead. This code will naturally re-run when props or state change without triggering additional render cycles.
+
+Synchronous `setState` calls in effects trigger immediate re-renders before the browser can paint, causing performance issues and visual jank. React has to render twice: once to apply the state update, then again after effects run. This double rendering is wasteful when the same result could be achieved with a single render.
+
+Examples of incorrect code for this rule:
+
+```jsx
+// ❌ Synchronous setState in effect
+function Component({data}) {
+  const [items, setItems] = useState([]);
+
+  useEffect(() => {
+    setItems(data); // Extra render, use initial state instead
+  }, [data]);
+}
+
+// ❌ Setting loading state synchronously
+function Component() {
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setLoading(true); // Synchronous, causes extra render
+    fetchData().then(() => setLoading(false));
+  }, []);
+}
+
+// ❌ Transforming data in effect
+function Component({rawData}) {
+  const [processed, setProcessed] = useState([]);
+
+  useEffect(() => {
+    setProcessed(rawData.map(transform)); // Should derive in render
+  }, [rawData]);
+}
+
+// ❌ Deriving state from props
+function Component({selectedId, items}) {
+  const [selected, setSelected] = useState(null);
+
+  useEffect(() => {
+    setSelected(items.find(i => i.id === selectedId));
+  }, [selectedId, items]);
+}
+```
+
+Examples of correct code for this rule:
+
+```jsx
+// ✅ setState in an effect is fine if the value comes from a ref
+function Tooltip() {
+  const ref = useRef(null);
+  const [tooltipHeight, setTooltipHeight] = useState(0);
+
+  useLayoutEffect(() => {
+    const { height } = ref.current.getBoundingClientRect();
+    setTooltipHeight(height);
+  }, []);
+}
+
+// ✅ Calculate during render
+function Component({selectedId, items}) {
+  const selected = items.find(i => i.id === selectedId);
+  return <div>{selected?.name}</div>;
+}
+```
