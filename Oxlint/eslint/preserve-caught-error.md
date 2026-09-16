@@ -4,13 +4,14 @@ Issue: -
 
 ## Description
 
-Re-throwing an error without preserving the original error loses important debugging information and makes it harder to trace the root cause of issues.
+Re-throwing an error without preserving the original error loses important
+debugging information and makes it harder to trace the root cause of issues.
 
 ## Examples
 
 Example of **incorrect** code:
 
-```ts
+```javascript
 try {
   doSomething();
 } catch (err) {
@@ -20,7 +21,7 @@ try {
 
 Example of **correct** code:
 
-```ts
+```javascript
 try {
   doSomething();
 } catch (err) {
