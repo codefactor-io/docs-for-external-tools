@@ -1,4 +1,4 @@
-Pattern: File Data Exfiltration Flow
+Pattern: File data exfiltration flow
 
 Issue: -
 

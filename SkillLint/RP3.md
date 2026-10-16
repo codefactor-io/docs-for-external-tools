@@ -1,4 +1,4 @@
-Pattern: Floating Skill Version
+Pattern: Floating skill version
 
 Issue: -
 

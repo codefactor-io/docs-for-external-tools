@@ -1,4 +1,4 @@
-Pattern: Insecure Deserialization
+Pattern: Insecure deserialization
 
 Issue: -
 

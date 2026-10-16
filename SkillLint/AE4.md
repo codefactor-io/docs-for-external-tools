@@ -1,4 +1,4 @@
-Pattern: Disguised Unicode Text
+Pattern: Disguised Unicode text
 
 Issue: -
 

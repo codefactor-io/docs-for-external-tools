@@ -1,4 +1,4 @@
-Pattern: Unicode Deception
+Pattern: Unicode deception
 
 Issue: -
 

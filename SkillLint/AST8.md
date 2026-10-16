@@ -1,4 +1,4 @@
-Pattern: Decoded or Downloaded Code Execution
+Pattern: Decoded or downloaded code execution
 
 Issue: -
 

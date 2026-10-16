@@ -1,4 +1,4 @@
-Pattern: Misleading File Extension
+Pattern: Misleading file extension
 
 Issue: -
 

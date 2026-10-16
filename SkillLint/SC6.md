@@ -1,4 +1,4 @@
-Pattern: Typosquatting Dependency
+Pattern: Typosquatting dependency
 
 Issue: -
 

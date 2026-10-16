@@ -1,4 +1,4 @@
-Pattern: Crypto Miner Detected
+Pattern: Crypto miner detected
 
 Issue: -
 

@@ -1,4 +1,4 @@
-Pattern: Shipped Python Bytecode
+Pattern: Shipped Python bytecode
 
 Issue: -
 

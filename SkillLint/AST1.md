@@ -1,4 +1,4 @@
-Pattern: Dynamic exec() Call
+Pattern: Dynamic exec() call
 
 Issue: -
 

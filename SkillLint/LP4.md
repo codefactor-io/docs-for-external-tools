@@ -1,4 +1,4 @@
-Pattern: Overdeclared Permission
+Pattern: Overdeclared permission
 
 Issue: -
 

@@ -1,4 +1,4 @@
-Pattern: Oversized Instruction File
+Pattern: Oversized instruction file
 
 Issue: -
 

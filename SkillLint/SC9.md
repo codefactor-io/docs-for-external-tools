@@ -1,14 +1,14 @@
-Pattern: Concealed Executable Artifact
+Pattern: Concealed executable artifact
 
 Issue: -
 
 ## Description
 
-An executable is concealed inside another file: inside an Office document or archive, behind a hidden or misleading name, or in a referenced archive member that couldn't be inspected. Extension-based review misses these.
+An executable is concealed: behind a hidden name, in an excluded folder such as node_modules, or in content that can't be analysed or fully inspected, including excluded files that SKILL.md references. Extension-based review misses these.
 
 
 Example of **insecure** code:
 
 ```text
-my-skill/assets/report.docx   (contains an embedded .exe)
+my-skill/.tools/run.sh   (hidden executable script)
 ```

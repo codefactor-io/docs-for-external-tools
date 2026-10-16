@@ -1,4 +1,4 @@
-Pattern: Untrusted Data to Deserializer Flow
+Pattern: Untrusted data to deserializer flow
 
 Issue: -
 

@@ -1,4 +1,4 @@
-Pattern: Bundled Lifecycle Hooks
+Pattern: Bundled lifecycle hooks
 
 Issue: -
 

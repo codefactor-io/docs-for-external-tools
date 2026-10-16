@@ -1,4 +1,4 @@
-Pattern: Credential Exfiltration Flow
+Pattern: Credential exfiltration flow
 
 Issue: -
 

@@ -1,4 +1,4 @@
-Pattern: NUL Bytes in Text File
+Pattern: NUL bytes in text file
 
 Issue: -
 

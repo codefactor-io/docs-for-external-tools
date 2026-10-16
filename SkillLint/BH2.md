@@ -1,4 +1,4 @@
-Pattern: Hook Data Exfiltration
+Pattern: Hook data exfiltration
 
 Issue: -
 

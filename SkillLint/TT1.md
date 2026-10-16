@@ -1,4 +1,4 @@
-Pattern: Direct Source-to-Sink Flow
+Pattern: Direct source-to-sink flow
 
 Issue: -
 

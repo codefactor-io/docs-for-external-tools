@@ -1,4 +1,4 @@
-Pattern: Shell Command Execution
+Pattern: Shell command execution
 
 Issue: -
 

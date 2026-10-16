@@ -1,4 +1,4 @@
-Pattern: Broad Bundled Permissions
+Pattern: Broad bundled permissions
 
 Issue: -
 

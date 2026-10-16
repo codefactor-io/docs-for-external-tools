@@ -1,4 +1,4 @@
-Pattern: External Input to Execution Flow
+Pattern: External input to execution flow
 
 Issue: -
 

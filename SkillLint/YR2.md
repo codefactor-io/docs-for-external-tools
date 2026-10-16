@@ -1,4 +1,4 @@
-Pattern: Webshell Detected
+Pattern: Webshell detected
 
 Issue: -
 

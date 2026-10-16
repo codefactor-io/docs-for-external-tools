@@ -1,4 +1,4 @@
-Pattern: Reflective Dangerous Call
+Pattern: Reflective dangerous call
 
 Issue: -
 

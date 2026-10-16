@@ -1,4 +1,4 @@
-Pattern: Abandoned Dependency
+Pattern: Abandoned dependency
 
 Issue: -
 

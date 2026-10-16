@@ -1,4 +1,4 @@
-Pattern: Dynamic __import__() Call
+Pattern: Dynamic __import__() call
 
 Issue: -
 

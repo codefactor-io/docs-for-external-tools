@@ -1,4 +1,4 @@
-Pattern: Dynamic eval() Call
+Pattern: Dynamic eval() call
 
 Issue: -
 

@@ -1,4 +1,4 @@
-Pattern: Wildcard Permission
+Pattern: Wildcard permission
 
 Issue: -
 

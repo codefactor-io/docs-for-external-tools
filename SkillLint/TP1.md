@@ -1,4 +1,4 @@
-Pattern: Hidden Instructions
+Pattern: Hidden instructions
 
 Issue: -
 

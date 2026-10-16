@@ -1,4 +1,4 @@
-Pattern: Variable-Mediated Taint Flow
+Pattern: Variable-mediated taint flow
 
 Issue: -
 

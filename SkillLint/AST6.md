@@ -1,4 +1,4 @@
-Pattern: Runtime compile() Call
+Pattern: Runtime compile() call
 
 Issue: -
 
