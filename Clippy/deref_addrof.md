@@ -1,0 +1,37 @@
+Pattern: Redundant `*&` dereference
+
+Issue: -
+
+## Description
+
+Immediately dereferencing a reference is no-op and
+makes the code less clear.
+
+## What it does
+
+Checks for usage of `*&` and `*&mut` in expressions.
+
+## Examples
+
+Example of **incorrect** code:
+
+```rust
+let a = f(*&mut b);
+let c = *&d;
+```
+
+Example of **correct** code:
+
+```rust
+let a = f(b);
+let c = d;
+```
+
+## Known problems
+
+Multiple dereference/addrof pairs are not handled so
+the suggested fix for `x = **&&y` is `x = *&y`, which is still incorrect.
+
+## Further Reading
+
+* [Clippy - deref_addrof](https://clippy.rust-lang.org/stable/index.html#deref_addrof)

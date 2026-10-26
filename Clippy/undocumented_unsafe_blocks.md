@@ -1,0 +1,57 @@
+Pattern: `unsafe` block without `SAFETY` comment
+
+Issue: -
+
+## Description
+
+Undocumented unsafe blocks and impls can make it difficult to read and maintain code.
+Writing out the safety justification may help in discovering unsoundness or bugs.
+
+## What it does
+
+Checks for `unsafe` blocks and impls without a `// SAFETY: ` comment
+explaining why the unsafe operations performed inside
+the block are safe.
+
+Note the comment must appear on the line(s) preceding the unsafe block
+with nothing appearing in between. The following is ok:
+```rust
+foo(
+    // SAFETY:
+    // This is a valid safety comment
+    unsafe { *x }
+)
+```
+But neither of these are:
+```rust
+// SAFETY:
+// This is not a valid safety comment
+foo(
+    /* SAFETY: Neither is this */ unsafe { *x },
+);
+```
+
+## Examples
+
+Example of **incorrect** code:
+
+```rust
+use std::ptr::NonNull;
+let a = &mut 42;
+
+let ptr = unsafe { NonNull::new_unchecked(a) };
+```
+
+Example of **correct** code:
+
+```rust
+use std::ptr::NonNull;
+let a = &mut 42;
+
+// SAFETY: references are guaranteed to be non-null.
+let ptr = unsafe { NonNull::new_unchecked(a) };
+```
+
+## Further Reading
+
+* [Clippy - undocumented_unsafe_blocks](https://clippy.rust-lang.org/stable/index.html#undocumented_unsafe_blocks)

@@ -1,0 +1,35 @@
+Pattern: `mem::replace()` with uninitialized value
+
+Issue: -
+
+## Description
+
+This will lead to undefined behavior even if the
+value is overwritten later, because the uninitialized value may be
+observed in the case of a panic.
+
+## What it does
+
+Checks for `mem::replace(&mut _, mem::uninitialized())`
+and `mem::replace(&mut _, mem::zeroed())`.
+
+## Examples
+
+```rust
+use std::mem;
+
+#[allow(deprecated, invalid_value)]
+fn myfunc (v: &mut Vec<i32>) {
+    let taken_v = unsafe { mem::replace(v, mem::uninitialized()) };
+    let new_v = may_panic(taken_v); // undefined behavior on panic
+    mem::forget(mem::replace(v, new_v));
+}
+```
+
+The [take_mut](https://docs.rs/take_mut) crate offers a sound solution,
+at the cost of either lazily creating a replacement value or aborting
+on panic, to ensure that the uninitialized value cannot be observed.
+
+## Further Reading
+
+* [Clippy - mem_replace_with_uninit](https://clippy.rust-lang.org/stable/index.html#mem_replace_with_uninit)

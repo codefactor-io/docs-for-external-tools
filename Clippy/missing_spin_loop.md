@@ -1,0 +1,42 @@
+Pattern: Empty busy-wait loop
+
+Issue: -
+
+## Description
+
+The loop body should have something like `thread::park()` or at least
+`std::hint::spin_loop()` to avoid needlessly burning cycles and conserve
+energy. Perhaps even better use an actual lock, if possible.
+
+## What it does
+
+Checks for empty spin loops
+
+## Examples
+
+Example of **incorrect** code:
+
+```rust
+use core::sync::atomic::{AtomicBool, Ordering};
+let b = AtomicBool::new(true);
+// give a ref to `b` to another thread,wait for it to become false
+while b.load(Ordering::Acquire) {};
+```
+
+Example of **correct** code:
+
+```rust
+while b.load(Ordering::Acquire) {
+    std::hint::spin_loop()
+}
+```
+
+## Known problems
+
+This lint doesn't currently trigger on `while let` or
+`loop { match .. { .. } }` loops, which would be considered idiomatic in
+combination with e.g. `AtomicBool::compare_exchange_weak`.
+
+## Further Reading
+
+* [Clippy - missing_spin_loop](https://clippy.rust-lang.org/stable/index.html#missing_spin_loop)

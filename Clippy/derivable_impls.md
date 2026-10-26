@@ -1,0 +1,50 @@
+Pattern: Manual `Default` impl identical to derive
+
+Issue: -
+
+## Description
+
+It is less concise.
+
+## What it does
+
+Detects manual `std::default::Default` implementations that are identical to a derived implementation.
+
+## Examples
+
+Example of **incorrect** code:
+
+```rust
+struct Foo {
+    bar: bool
+}
+
+impl Default for Foo {
+    fn default() -> Self {
+        Self {
+            bar: false
+        }
+    }
+}
+```
+
+Example of **correct** code:
+
+```rust
+#[derive(Default)]
+struct Foo {
+    bar: bool
+}
+```
+
+## Known problems
+
+Derive macros [sometimes use incorrect bounds](https://github.com/rust-lang/rust/issues/26925)
+in generic types and the user defined `impl` may be more generalized or
+specialized than what derive will produce. This lint can't detect the manual `impl`
+has exactly equal bounds, and therefore this lint is disabled for types with
+generic parameters.
+
+## Further Reading
+
+* [Clippy - derivable_impls](https://clippy.rust-lang.org/stable/index.html#derivable_impls)

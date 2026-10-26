@@ -1,0 +1,56 @@
+Pattern: `Vec` with uninitialized elements
+
+Issue: -
+
+## Description
+
+It creates a `Vec` with uninitialized data, which leads to
+undefined behavior with most safe operations. Notably, uninitialized
+`Vec<u8>` must not be used with generic `Read`.
+
+Moreover, calling `set_len()` on a `Vec` created with `new()` or `default()`
+creates out-of-bound values that lead to heap memory corruption when used.
+
+## What it does
+
+Checks for `set_len()` call that creates `Vec` with uninitialized elements.
+This is commonly caused by calling `set_len()` right after allocating or
+reserving a buffer with `new()`, `default()`, `with_capacity()`, or `reserve()`.
+
+## Examples
+
+Example of **incorrect** code:
+
+```rust
+let mut vec: Vec<u8> = Vec::with_capacity(1000);
+unsafe { vec.set_len(1000); }
+reader.read(&mut vec); // undefined behavior!
+```
+
+## Known Problems
+
+This lint only checks directly adjacent statements.
+
+## How to fix?
+
+1. Use an initialized buffer:
+   ```rust
+   let mut vec: Vec<u8> = vec![0; 1000];
+   reader.read(&mut vec);
+   ```
+2. Wrap the content in `MaybeUninit`:
+   ```rust
+   let mut vec: Vec<MaybeUninit<T>> = Vec::with_capacity(1000);
+   vec.set_len(1000);  // `MaybeUninit` can be uninitialized
+   ```
+3. If you are on 1.60.0 or later, `Vec::spare_capacity_mut()` is available:
+   ```rust
+   let mut vec: Vec<u8> = Vec::with_capacity(1000);
+   let remaining = vec.spare_capacity_mut();  // `&mut [MaybeUninit<u8>]`
+   // perform initialization with `remaining`
+   vec.set_len(...);  // Safe to call `set_len()` on initialized part
+   ```
+
+## Further Reading
+
+* [Clippy - uninit_vec](https://clippy.rust-lang.org/stable/index.html#uninit_vec)
