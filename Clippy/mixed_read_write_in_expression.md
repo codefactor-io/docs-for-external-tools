@@ -4,7 +4,7 @@ Issue: -
 
 ## Description
 
-While [the evaluation order of sub-expressions] is fully specified in Rust,
+While [the evaluation order of sub-expressions][order] is fully specified in Rust,
 it still may be confusing to read an expression where the evaluation order
 affects its behavior.
 
@@ -35,7 +35,7 @@ let tmp = {
 let a = tmp + x;
 ```
 
-[order]: (https://doc.rust-lang.org/reference/expressions.html?highlight=subexpression#evaluation-order-of-operands)
+[order]: https://doc.rust-lang.org/reference/expressions.html?highlight=subexpression#evaluation-order-of-operands
 
 ## Known problems
 

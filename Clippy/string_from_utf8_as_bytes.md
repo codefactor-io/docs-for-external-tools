@@ -8,7 +8,7 @@ It's unnecessary, the string can be used directly.
 
 ## What it does
 
-Check if the string is transformed to byte array and cast back to string.
+Check if the string is transformed to byte array and casted back to string.
 
 ## Examples
 

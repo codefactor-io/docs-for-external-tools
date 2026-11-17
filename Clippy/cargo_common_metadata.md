@@ -9,7 +9,7 @@ purpose of the crate, and key information related to it.
 
 ## What it does
 
-Checks to see if all common metadata is defined in
+Checks to see if common metadata is defined in
 `Cargo.toml`. See: <https://rust-lang.github.io/api-guidelines/documentation.html#cargotoml-includes-all-common-metadata-c-metadata>
 
 ## Examples
@@ -20,7 +20,6 @@ Checks to see if all common metadata is defined in
 name = "clippy"
 version = "0.0.212"
 repository = "https://github.com/rust-lang/rust-clippy"
-readme = "README.md"
 license = "MIT OR Apache-2.0"
 keywords = ["clippy", "lint", "plugin"]
 categories = ["development-tools", "development-tools::cargo-plugins"]
@@ -35,7 +34,6 @@ name = "clippy"
 version = "0.0.212"
 description = "A bunch of helpful lints to avoid common pitfalls in Rust"
 repository = "https://github.com/rust-lang/rust-clippy"
-readme = "README.md"
 license = "MIT OR Apache-2.0"
 keywords = ["clippy", "lint", "plugin"]
 categories = ["development-tools", "development-tools::cargo-plugins"]

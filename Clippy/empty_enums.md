@@ -25,9 +25,6 @@ For further information, visit
 Checks for `enum`s with no variants, which therefore are uninhabited types
 (cannot be instantiated).
 
-As of this writing, the `never_type` is still a nightly-only experimental API.
-Therefore, this lint is only triggered if `#![feature(never_type)]` is enabled.
-
 ## Examples
 
 ```rust
@@ -36,8 +33,6 @@ enum CannotExist {}
 
 Use instead:
 ```rust
-#![feature(never_type)]
-
 /// Use the `!` type directly...
 type CannotExist = !;
 

@@ -11,9 +11,10 @@ Redundant code.
 Checks for expressions of the form `if c { true } else {
 false }` (or vice versa) and suggests using the condition directly.
 
-## Examples
+This also covers the early-return guard form, where a condition returns a
+tuple-like based on it.
 
-Example of **incorrect** code:
+## Examples
 
 ```rust
 if x {
@@ -23,10 +24,22 @@ if x {
 }
 ```
 
-Example of **correct** code:
-
+Use instead:
 ```rust
 !x
+```
+
+Or, for the early-return guard form:
+```rust
+if c {
+    return Ok(true);
+}
+Ok(false)
+```
+
+Use instead:
+```rust
+Ok(c)
 ```
 
 ## Known problems
