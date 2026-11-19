@@ -4,27 +4,60 @@ Issue: -
 
 ## Description
 
-An input which the action does not define is specified.
+An action receives an input that it does not declare. A misspelled input can leave the action using its default behavior instead of the intended value.
 
-The rules `missing-action-input` and `unknown-action-input` report a required input that a step does not set at `with:`, and an input that the action does not define. For an action of the same repository, jactionlint reads the `action.yml` file of the action. Both rules are in the `correctness` profile.
+Check the action's metadata and correct or remove the input.
+
+## Examples
+
+Local action metadata:
+
+```yaml
+# file: .github/actions/greet/action.yml
+name: Greet
+description: Print a greeting
+inputs:
+  message:
+    description: Greeting to print
+    required: true
+runs:
+  using: composite
+  steps:
+    - run: echo "$MESSAGE"
+      shell: bash
+      env:
+        MESSAGE: ${{ inputs.message }}
+```
 
 Example of **incorrect** code:
 
 ```yaml
-# select: missing-action-input,unknown-action-input
+# file: .github/workflows/ci.yml
 on: push
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      # missing required input "message"
-      - uses: ./.github/actions/my-action
-      # unexpected input "additions"
-      - uses: ./.github/actions/my-action
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/greet
         with:
-          name: rhysd
-          message: hello
-          additions: foo, bar
+          message: Hello
+          mesage: Hello
+```
+
+Example of **correct** code:
+
+```yaml
+# file: .github/workflows/ci.yml
+on: push
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/greet
+        with:
+          message: Hello
 ```
 
 ## Further Reading

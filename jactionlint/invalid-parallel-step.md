@@ -4,9 +4,11 @@ Issue: -
 
 ## Description
 
-A step is not allowed inside a parallel group or refers to a wrong step.
+A `wait` or `cancel` step refers to a step that is not an earlier background step, or a step is not allowed inside a `parallel` group.
 
-The rule `invalid-parallel-step` reports a `wait` or `cancel` step that names a step which is not an earlier background step, and a step that is not allowed inside a `parallel` group.
+Reference an earlier background step and use only the step types supported by the group.
+
+## Examples
 
 Example of **incorrect** code:
 
@@ -16,12 +18,26 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - name: Start server
-        id: server
-        run: echo 'start'
+      - id: server
+        run: echo start
         background: true
-      - run: echo 'tests'
+      - run: echo tests
       - cancel: serverr
+```
+
+Example of **correct** code:
+
+```yaml
+on: push
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - id: server
+        run: echo start
+        background: true
+      - run: echo tests
+      - cancel: server
 ```
 
 ## Further Reading

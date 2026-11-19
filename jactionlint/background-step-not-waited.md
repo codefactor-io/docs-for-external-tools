@@ -1,12 +1,14 @@
-Pattern: Background step not waited
+Pattern: Missing wait for background step
 
 Issue: -
 
 ## Description
 
-Outputs or results of a background step are read before a wait step covers it.
+A step reads the outputs, outcome, or conclusion of a background step before it has finished. These expressions evaluate to an empty string until a `wait` or `wait-all` step waits for that background step.
 
-The rule `background-step-not-waited` reports a read of `steps.<id>.outputs.*`, `steps.<id>.outcome` or `steps.<id>.conclusion` of a background step before a `wait` or `wait-all` step covers it. Such an expression evaluates to an empty string.
+Wait for the background step before reading its results.
+
+## Examples
 
 Example of **incorrect** code:
 

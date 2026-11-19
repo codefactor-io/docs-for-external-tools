@@ -1,12 +1,14 @@
-Pattern: Context not available here
+Pattern: Unavailable context or function
 
 Issue: -
 
 ## Description
 
-A context or special function is used where it is not available.
+An expression uses a context or special function at a workflow key where GitHub Actions does not provide it. For example, the `env` context is not available in workflow-level `defaults.run.shell`.
 
-The rule `context-availability` reports a context or a special function that is used at a key where GitHub Actions does not provide it.
+Use a context allowed at that key, or move the expression to a supported location.
+
+## Examples
 
 Example of **incorrect** code:
 

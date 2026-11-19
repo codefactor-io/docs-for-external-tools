@@ -4,9 +4,11 @@ Issue: -
 
 ## Description
 
-The workflow does not follow the syntax of GitHub Actions workflows.
+A workflow uses an unexpected key or places a key where it is not supported. Keys are case-sensitive, so `Shell` is not the same as `shell`.
 
-The rule `workflow-syntax` reports a key that the syntax of GitHub Actions workflows does not define in the mapping it appears in, such as a misspelled `defaults:` or a `Shell:` with a capital letter.
+Correct misspelled keys and follow the GitHub Actions workflow structure.
+
+## Examples
 
 Example of **incorrect** code:
 

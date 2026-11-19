@@ -4,34 +4,36 @@ Issue: -
 
 ## Description
 
-An event is configured with options it does not support.
+An event is configured with options it does not support. For example, `workflow_run` requires a `workflows` list, and other events cannot use that list.
 
-The rules `unknown-event`, `invalid-activity-type`, `invalid-event-filter` and `invalid-event-config` report webhook events under `on:` that GitHub cannot use: an event that does not exist, an activity type or a filter that the event does not have, filters that exclude each other, and an event configured with options it does not support.
+Use only the configuration options supported by the selected event.
+
+## Examples
 
 Example of **incorrect** code:
 
 ```yaml
 on:
   push:
-    # ERROR: Incorrect filter. 'branches' is correct
-    branch: foo
-    # ERROR: Both 'paths' and 'paths-ignore' filters cannot be used for the same event
-    paths: path/to/foo
-    paths-ignore: path/to/foo
-  issues:
-    # ERROR: Incorrect type. 'opened' is correct
-    types: created
-  release:
-    # ERROR: 'tags' filter is not available for 'release' event
-    tags: v*.*.*
-  # ERROR: Unknown event name
-  pullreq:
-
+    workflows: [Build]
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - run: echo ...
+      - run: echo hello
+```
+
+Example of **correct** code:
+
+```yaml
+on:
+  push:
+    branches: [main]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo hello
 ```
 
 ## Further Reading

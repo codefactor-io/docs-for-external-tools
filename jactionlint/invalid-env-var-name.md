@@ -4,9 +4,9 @@ Issue: -
 
 ## Description
 
-An environment variable name contains characters which are not allowed.
+An environment variable name under `env` contains `=`, `&`, a space, or a tab. Rename the variable and update its references.
 
-The rule `invalid-env-var-name` reports an environment variable name under `env:` that contains `=`, `&`, a space or a tab.
+## Examples
 
 Example of **incorrect** code:
 

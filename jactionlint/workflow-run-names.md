@@ -1,20 +1,50 @@
-Pattern: Unknown workflow in workflow_run
+Pattern: Unknown workflow in `workflow_run`
 
 Issue: -
 
 ## Description
 
-A workflow_run event refers to a workflow which does not exist in the repository.
+The `on.workflow_run.workflows` list names a workflow that does not exist in the repository. It must match the workflow's `name`, not its filename.
 
-The rule `workflow-run-names` reports a name in `on.workflow_run.workflows` that no workflow of the repository has.
+Correct the workflow name so the trigger can run.
+
+## Examples
+
+Workflow to trigger from:
+
+```yaml
+# file: .github/workflows/build.yml
+name: Build
+on: push
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo build
+```
 
 Example of **incorrect** code:
 
 ```yaml
+# file: .github/workflows/ci.yml
 on:
   workflow_run:
-    # ERROR: No workflow named "Biuld" exists in the repository
     workflows: [Biuld]
+    types: [completed]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo hello
+```
+
+Example of **correct** code:
+
+```yaml
+# file: .github/workflows/ci.yml
+on:
+  workflow_run:
+    workflows: [Build]
     types: [completed]
 jobs:
   test:

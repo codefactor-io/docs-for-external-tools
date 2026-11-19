@@ -4,28 +4,36 @@ Issue: -
 
 ## Description
 
-A cron schedule has an invalid format.
+A scheduled workflow has an invalid cron expression. GitHub Actions expects five fields describing the minute, hour, day of the month, month, and day of the week.
 
-The rules `invalid-cron`, `cron-too-frequent` and `invalid-timezone` report a `schedule` trigger that GitHub cannot run as written: a cron expression that is not valid, a job that would run more often than once every 5 minutes, and a `timezone` that is not an IANA timezone name.
+Use a valid five-field cron expression.
+
+## Examples
 
 Example of **incorrect** code:
 
 ```yaml
 on:
   schedule:
-    # ERROR: Cron syntax is not correct
     - cron: '0 */3 * *'
-    # ERROR: Interval of scheduled job is too small (job runs too frequently)
-    - cron: '* */3 * * *'
-    # ERROR: Timezone is not a valid IANA timezone string
-    - cron: '*/5 * * * *'
-      timezone: 'Asia/Somewhere'
-
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - run: echo ...
+      - run: echo hello
+```
+
+Example of **correct** code:
+
+```yaml
+on:
+  schedule:
+    - cron: '0 */3 * * *'
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo hello
 ```
 
 ## Further Reading

@@ -1,12 +1,14 @@
-Pattern: Invalid workflow_dispatch input
+Pattern: Invalid `workflow_dispatch` input
 
 Issue: -
 
 ## Description
 
-An input of the workflow_dispatch event is invalid.
+An input under `on.workflow_dispatch.inputs` has an unsupported type, a `choice` input has no options, or a default value does not match the input's type or choices. Defining more than 25 inputs is also reported.
 
-The rule `invalid-workflow-dispatch-input` reports an input of the `workflow_dispatch` event that cannot work: a `choice` input without `options:`, a default value that does not fit the type of the input, or more than 25 inputs.
+Use a supported type, provide options for choices, and choose a compatible default value.
+
+## Examples
 
 Example of **incorrect** code:
 

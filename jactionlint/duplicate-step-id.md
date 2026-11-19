@@ -4,9 +4,11 @@ Issue: -
 
 ## Description
 
-A step ID is not unique within its job.
+Two steps in the same job use the same ID. Step IDs are compared without regard to case, so `step_id` and `STEP_ID` conflict.
 
-The rule `duplicate-step-id` reports a step ID that is not unique within its job. A job ID that is defined twice is reported as `duplicate-key`.
+Use a unique ID for each step within a job. The same ID can be used in a different job.
+
+## Examples
 
 Example of **incorrect** code:
 
@@ -16,18 +18,24 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - run: echo 'hello'
-        id: step_id
-      - run: echo 'bye'
-        # ERROR: Duplicate step ID
-        id: STEP_ID
-  # ERROR: Duplicate job ID
-  TEST:
+      - id: step_id
+        run: echo hello
+      - id: STEP_ID
+        run: echo goodbye
+```
+
+Example of **correct** code:
+
+```yaml
+on: push
+jobs:
+  test:
     runs-on: ubuntu-latest
     steps:
-      - run: echo 'hello'
-        # OK. Step ID uniqueness is job-local
-        id: step_id
+      - id: hello
+        run: echo hello
+      - id: goodbye
+        run: echo goodbye
 ```
 
 ## Further Reading

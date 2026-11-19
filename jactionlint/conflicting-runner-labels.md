@@ -4,9 +4,11 @@ Issue: -
 
 ## Description
 
-The runner labels of a job conflict with each other.
+A job specifies runner labels that cannot all belong to the same runner. GitHub requires a runner to match every label in `runs-on`.
 
-The rules `unknown-runner-label` and `conflicting-runner-labels` check the labels at `runs-on:`: a label that no GitHub-hosted runner has (or that GitHub has retired), and a combination of labels that no runner can have. Both are in the `correctness` profile, so they run in every profile. The rule `invalid-label-pattern` reports a pattern in `self-hosted-runner.labels` of the configuration file that is not a valid glob.
+Use compatible labels, or use a matrix to run the job on different operating systems.
+
+## Examples
 
 Example of **incorrect** code:
 
@@ -14,28 +16,23 @@ Example of **incorrect** code:
 on: push
 jobs:
   test:
+    runs-on: [ubuntu-latest, windows-latest]
+    steps:
+      - run: echo hello
+```
+
+Example of **correct** code:
+
+```yaml
+on: push
+jobs:
+  test:
     strategy:
       matrix:
-        runner:
-          # OK
-          - macos-latest
-          # ERROR: Unknown runner
-          - linux-latest
-          # OK: Preset labels for self-hosted runner
-          - [self-hosted, linux, x64]
-          # OK: Single preset label for self-hosted runner
-          - arm64
-          # ERROR: Unknown label "gpu". Custom label must be defined in jactionlint.yaml config file
-          - gpu
-    runs-on: ${{ matrix.runner }}
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
     steps:
-      - run: echo ...
-
-  test2:
-    # ERROR: Too old macOS worker
-    runs-on: macos-10.13
-    steps:
-      - run: echo ...
+      - run: echo hello
 ```
 
 ## Further Reading

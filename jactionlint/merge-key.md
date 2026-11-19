@@ -4,32 +4,39 @@ Issue: -
 
 ## Description
 
-The YAML merge key << is used, which GitHub Actions does not support.
+A workflow uses the YAML merge key `<<`, which GitHub Actions does not support.
 
-The rules `unused-anchor`, `recursive-alias` and `merge-key` report mistakes with YAML anchors and aliases in a workflow, and `yaml-syntax` reports an alias whose anchor is not defined.
+Write the mapping entries explicitly. YAML anchors and aliases can reuse complete values without a merge key.
+
+## Examples
 
 Example of **incorrect** code:
 
 ```yaml
 on: push
-
+env: &defaults
+  MESSAGE: hello
 jobs:
   test:
-    services:
-      nginx:
-        image: nginx:latest
-        credentials: &credentials
-          # ERROR: Credentials are embedded directly in workflow
-          username: my-user-name
-          password: P@ssw0rd
-          # ERROR: Unexpected key 'email'
-          email: me@example.com
-      redis:
-        image: redis:latest
-        credentials: *credentials
+    env:
+      <<: *defaults
     runs-on: ubuntu-latest
     steps:
-      - run: ./do_something.sh
+      - run: echo hello
+```
+
+Example of **correct** code:
+
+```yaml
+on: push
+env: &defaults
+  MESSAGE: hello
+jobs:
+  test:
+    env: *defaults
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo hello
 ```
 
 ## Further Reading

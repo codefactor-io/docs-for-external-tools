@@ -4,30 +4,40 @@ Issue: -
 
 ## Description
 
-A job ID is listed more than once in needs.
+A job lists the same dependency more than once in `needs`. List each job ID only once.
 
-The rules `cyclic-job-needs`, `undefined-job-needs` and `duplicate-job-needs` report `needs:` lists that cannot work: jobs that need each other in a cycle, a needed job that does not exist and a job that is listed twice.
+## Examples
 
 Example of **incorrect** code:
 
 ```yaml
 on: push
 jobs:
-  prepare:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo hello
+  test:
+    needs: [build, build]
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo hello
+```
+
+Example of **correct** code:
+
+```yaml
+on: push
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo hello
+  test:
     needs: [build]
     runs-on: ubuntu-latest
     steps:
-      - run: echo 'prepare'
-  install:
-    needs: [prepare]
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo 'install'
-  build:
-    needs: [install]
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo 'build'
+      - run: echo hello
 ```
 
 ## Further Reading

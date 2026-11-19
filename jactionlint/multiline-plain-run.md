@@ -1,12 +1,14 @@
-Pattern: Multi-line run without block scalar
+Pattern: Multiline `run` without block scalar
 
 Issue: -
 
 ## Description
 
-A run: is written over several lines without |, so YAML folds the lines into one command.
+A `run` script spans several lines without a YAML block scalar (`|`). YAML folds those line breaks into spaces, so the shell may run one command instead of several.
 
-The rule `multiline-plain-run` reports a `run:` that is written over several lines without a block scalar (`|`). YAML folds the line breaks of such a scalar into spaces, so the shell runs one long command instead of one command per line.
+Use `run: |` when each line should remain a separate shell command.
+
+## Examples
 
 Example of **incorrect** code:
 

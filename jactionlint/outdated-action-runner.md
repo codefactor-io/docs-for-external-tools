@@ -1,24 +1,35 @@
-Pattern: Outdated action
+Pattern: Unsupported action runtime
 
 Issue: -
 
 ## Description
 
-An action runs on a runtime which GitHub Actions no longer supports.
+An action version uses a runtime that GitHub Actions no longer supports, such as Node.js 16.
 
-The rule `outdated-action-runner` reports a popular action that runs on a runtime which GitHub Actions no longer supports. It is in the `correctness` profile.
+Update the action to a version that uses a supported runtime.
+
+## Examples
 
 Example of **incorrect** code:
 
 ```yaml
 on: push
-
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      # ERROR: actions/checkout@v3 is using the outdated runner 'node16'
       - uses: actions/checkout@v3
+```
+
+Example of **correct** code:
+
+```yaml
+on: push
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
 ```
 
 ## Further Reading

@@ -4,9 +4,11 @@ Issue: -
 
 ## Description
 
-A deprecated input of an action is used.
+An action input is marked as deprecated in the action's metadata. The action's `deprecationMessage` explains which input or behavior to use instead.
 
-The rule `deprecated-action-input` reports an input that a step sets at `with:` and that the action marks as deprecated with [`deprecationMessage`](https://docs.github.com/en/actions/reference/workflows-and-actions/metadata-syntax#inputsinput_iddeprecationmessage). It is in the `correctness` profile and reports `error`.
+Replace the deprecated input with the supported alternative.
+
+## Examples
 
 Example of **incorrect** code:
 

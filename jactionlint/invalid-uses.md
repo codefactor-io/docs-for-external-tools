@@ -1,12 +1,14 @@
-Pattern: Invalid uses reference
+Pattern: Invalid `uses` reference
 
 Issue: -
 
 ## Description
 
-A uses: value does not follow the format of an action or a Docker image.
+A `uses` reference does not follow the supported format for an action, reusable workflow, or Docker image.
 
-The rule `invalid-uses` reports a `uses:` value that does not follow the format of an action, a reusable workflow or a Docker image, and the rule `unpinned-uses` reports one that is not pinned to a commit. `invalid-uses` is in the `correctness` profile and `unpinned-uses` in the `default` profile.
+Include an owner, repository, and ref for remote actions, start local action paths with `./`, and provide a valid Docker image reference.
+
+## Examples
 
 Example of **incorrect** code:
 

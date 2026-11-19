@@ -4,9 +4,11 @@ Issue: -
 
 ## Description
 
-Text such as ${ github.ref }, $ {{ x }} or {{ github.sha }} is meant to be an expression but is not one. With the option pedantic, so is a shell variable in the input of an action.
+A value looks like a GitHub Actions expression but uses incorrect delimiters, such as `${ github.ref }` or `$ {{ github.sha }}`. GitHub expands expressions only inside `${{ }}`.
 
-The rule `malformed-expression-delimiters` reports text that is meant to be an expression but is not one, because GitHub expands only `${{ }}`: a dollar sign, two braces and no space in between. The rule is in the `correctness` profile, and its rule option `pedantic` adds a second tier.
+Use the correct delimiters. With the `pedantic` option, this rule also checks shell-style variables in action inputs.
+
+## Examples
 
 Example of **incorrect** code:
 

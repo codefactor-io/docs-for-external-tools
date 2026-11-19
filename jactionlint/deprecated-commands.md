@@ -4,25 +4,30 @@ Issue: -
 
 ## Description
 
-A deprecated workflow command such as ::set-output is used.
+A `run` script prints a deprecated workflow command, such as `::set-output`. Use the corresponding runner environment file instead, such as `$GITHUB_OUTPUT` for step outputs.
 
-The rule `deprecated-commands` reports a `run:` script that prints a workflow command which GitHub deprecated. The finding names the replacement.
+## Examples
 
 Example of **incorrect** code:
 
 ```yaml
 on: push
-
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      # ERROR: 'set-output' workflow command was deprecated
-      - run: echo '::set-output name=foo::bar'
-      # OK: Use this instead
-      - run: echo "foo=bar" >> "$GITHUB_OUTPUT"
-      # OK: 'debug' command is not deprecated
-      - run: echo "::debug::Set the Octocat variable"
+      - run: echo '::set-output name=version::1.2.3'
+```
+
+Example of **correct** code:
+
+```yaml
+on: push
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo 'version=1.2.3' >> "$GITHUB_OUTPUT"
 ```
 
 ## Further Reading

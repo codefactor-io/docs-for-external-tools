@@ -4,9 +4,11 @@ Issue: -
 
 ## Description
 
-A built-in function is called with wrong arguments.
+A built-in expression function receives the wrong number or types of arguments. For example, `startsWith` expects two strings.
 
-The rules `undefined-property`, `undefined-function` and `invalid-function-call` (all in the `correctness` profile) report a context or property that does not exist, a function that does not exist, and a call of a built-in function with the wrong number or types of arguments.
+Check the function's signature and pass compatible arguments.
+
+## Examples
 
 Example of **incorrect** code:
 
@@ -16,19 +18,19 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      # Access undefined context
-      - run: echo '${{ unknown_context }}'
-      # Access undefined property of context
-      - run: echo '${{ github.events }}'
-      # Calling undefined function (start's'With is correct)
-      - run: echo "${{ startWith('hello, world', 'lo,') }}"
-      # Wrong number of arguments
-      - run: echo "${{ startsWith('hello, world') }}"
-      # Wrong type of parameter
-      - run: echo "${{ startsWith('hello, world', github.event) }}"
-      # Function overloads can be handled properly. contains() has string version and array version
-      - run: echo "${{ contains('hello, world', 'lo,') }}"
-      - run: echo "${{ contains(github.event.issue.labels.*.name, 'enhancement') }}"
+      - run: echo "${{ startsWith('hello') }}"
+      - run: echo "${{ startsWith('hello', github.event) }}"
+```
+
+Example of **correct** code:
+
+```yaml
+on: push
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "${{ startsWith('hello', 'he') }}"
 ```
 
 ## Further Reading

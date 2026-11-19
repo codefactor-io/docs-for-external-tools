@@ -4,34 +4,36 @@ Issue: -
 
 ## Description
 
-An activity type is not available for the Webhook event.
+An event lists an activity type that GitHub Actions does not support for that event. For example, the `issues` event supports `opened`, not `created`.
 
-The rules `unknown-event`, `invalid-activity-type`, `invalid-event-filter` and `invalid-event-config` report webhook events under `on:` that GitHub cannot use: an event that does not exist, an activity type or a filter that the event does not have, filters that exclude each other, and an event configured with options it does not support.
+Choose an activity type supported by the event.
+
+## Examples
 
 Example of **incorrect** code:
 
 ```yaml
 on:
-  push:
-    # ERROR: Incorrect filter. 'branches' is correct
-    branch: foo
-    # ERROR: Both 'paths' and 'paths-ignore' filters cannot be used for the same event
-    paths: path/to/foo
-    paths-ignore: path/to/foo
   issues:
-    # ERROR: Incorrect type. 'opened' is correct
-    types: created
-  release:
-    # ERROR: 'tags' filter is not available for 'release' event
-    tags: v*.*.*
-  # ERROR: Unknown event name
-  pullreq:
-
+    types: [created]
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - run: echo ...
+      - run: echo hello
+```
+
+Example of **correct** code:
+
+```yaml
+on:
+  issues:
+    types: [opened]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo hello
 ```
 
 ## Further Reading

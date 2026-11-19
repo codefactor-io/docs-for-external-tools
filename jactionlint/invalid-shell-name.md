@@ -4,9 +4,11 @@ Issue: -
 
 ## Description
 
-A shell name is not available on the runner.
+A `shell` setting names a shell that GitHub Actions does not provide on the job's runner. This also applies to `defaults.run.shell`.
 
-The rule `invalid-shell-name` reports a `shell:` value that is not one of the shells that GitHub provides on the runner of the job. It checks the `shell:` of a step and the `shell:` of `defaults.run` at the job and at the workflow level.
+Choose a supported shell for that operating system, or provide a custom shell command containing the `{0}` script placeholder.
+
+## Examples
 
 Example of **incorrect** code:
 
@@ -36,7 +38,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - run: echo 'hello'
-        # ERROR: 'sh' is only available on Windows
+        # ERROR: 'sh' is not available on Windows
         shell: sh
       - run: echo 'hello'
         # OK: 'powershell' is only available on Windows

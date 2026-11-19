@@ -4,9 +4,9 @@ Issue: -
 
 ## Description
 
-A permission scope or its value is invalid.
+A `permissions` setting uses an unknown scope or an unsupported access level. Use `read`, `write`, or `none` for scopes that support them, or `read-all`, `write-all`, or `{}` for the entire setting.
 
-`invalid-permissions` reports a scope or an access level in `permissions:` that GitHub does not accept. `missing-permissions` reports a job that no `permissions:` covers, see [Require explicit permissions](https://jactionlint.jdx.dev/checks#require-explicit-permissions).
+## Examples
 
 Example of **incorrect** code:
 

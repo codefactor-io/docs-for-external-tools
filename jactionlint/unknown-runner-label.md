@@ -1,12 +1,14 @@
-Pattern: Retired runner label
+Pattern: Unknown or retired runner label
 
 Issue: -
 
 ## Description
 
-A runner label is one that GitHub has retired, so a job that uses it never gets a runner.
+A `runs-on` label is unknown or belongs to a runner image that GitHub has retired. A job cannot start without a matching runner.
 
-The rules `unknown-runner-label` and `conflicting-runner-labels` check the labels at `runs-on:`: a label that no GitHub-hosted runner has (or that GitHub has retired), and a combination of labels that no runner can have. Both are in the `correctness` profile, so they run in every profile. The rule `invalid-label-pattern` reports a pattern in `self-hosted-runner.labels` of the configuration file that is not a valid glob.
+Choose a supported label, or register custom self-hosted runner labels in jactionlint's configuration.
+
+## Examples
 
 Example of **incorrect** code:
 
@@ -14,28 +16,20 @@ Example of **incorrect** code:
 on: push
 jobs:
   test:
-    strategy:
-      matrix:
-        runner:
-          # OK
-          - macos-latest
-          # ERROR: Unknown runner
-          - linux-latest
-          # OK: Preset labels for self-hosted runner
-          - [self-hosted, linux, x64]
-          # OK: Single preset label for self-hosted runner
-          - arm64
-          # ERROR: Unknown label "gpu". Custom label must be defined in jactionlint.yaml config file
-          - gpu
-    runs-on: ${{ matrix.runner }}
+    runs-on: linux-latest
     steps:
-      - run: echo ...
+      - run: echo hello
+```
 
-  test2:
-    # ERROR: Too old macOS worker
-    runs-on: macos-10.13
+Example of **correct** code:
+
+```yaml
+on: push
+jobs:
+  test:
+    runs-on: ubuntu-latest
     steps:
-      - run: echo ...
+      - run: echo hello
 ```
 
 ## Further Reading

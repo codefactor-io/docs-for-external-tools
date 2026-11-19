@@ -4,9 +4,11 @@ Issue: -
 
 ## Description
 
-A ${{ }} expression has a syntax error.
+A GitHub Actions expression inside `${{ }}` contains invalid syntax, such as an unsupported operator, an invalid string delimiter, or a missing closing parenthesis.
 
-The rule `expression-syntax` reports a `${{ }}` expression that does not parse: an invalid character, an operator that GitHub Actions does not have, a missing parenthesis or an expression that ends too early. The rule is in the `correctness` profile.
+Use the supported expression syntax and single quotes for string literals.
+
+## Examples
 
 Example of **incorrect** code:
 

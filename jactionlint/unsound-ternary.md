@@ -4,16 +4,36 @@ Issue: -
 
 ## Description
 
-The a && b || c idiom has a falsy b so it always evaluates to c.
+In the expression `cond && b || c`, a falsy value for `b` makes the result `c` even when `cond` is true. Falsy literals include `''`, `0`, `false`, and `null`.
 
-The rule `unsound-ternary` reports the idiom `cond && b || c` when `b` is a literal that is always falsy: `''`, `0`, `false` or `null`. The idiom is commonly used as a ternary operator, but it works only when `b` is truthy. Otherwise the result is always `c`.
+Use an expression that preserves the intended result when the condition is true.
+
+## Examples
 
 Example of **incorrect** code:
 
 ```yaml
+on: push
 env:
-  # Always evaluated to 'staging-' regardless of the condition
-  PREFIX: ${{ env.DEPLOY == 'true' && '' || 'staging-' }}
+  PREFIX: ${{ github.ref == 'refs/heads/main' && '' || 'staging-' }}
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo hello
+```
+
+Example of **correct** code:
+
+```yaml
+on: push
+env:
+  PREFIX: ${{ github.ref != 'refs/heads/main' && 'staging-' || '' }}
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo hello
 ```
 
 ## Further Reading

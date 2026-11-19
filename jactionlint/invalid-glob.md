@@ -4,9 +4,11 @@ Issue: -
 
 ## Description
 
-A glob filter pattern is invalid.
+A branch, tag, or path filter contains an invalid glob pattern. These filters use GitHub Actions glob syntax rather than regular expressions.
 
-The rule `invalid-glob` reports a filter pattern of `branches`, `branches-ignore`, `tags`, `tags-ignore`, `paths` or `paths-ignore` that GitHub cannot use: a glob with a syntax error, a character that a Git ref name cannot contain, or a path that starts with `.` or `..`.
+Correct the pattern and avoid characters or path prefixes that the filter does not support.
+
+## Examples
 
 Example of **incorrect** code:
 

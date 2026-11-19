@@ -1,34 +1,41 @@
-Pattern: Broken environment file write
+Pattern: Incorrect environment file redirection
 
 Issue: -
 
 ## Description
 
-A script writes to GITHUB_OUTPUT or another environment file of the runner without the $, or empties it with > after it wrote to it.
+A script writes to a literal file named `GITHUB_OUTPUT` instead of the path in `$GITHUB_OUTPUT`, or overwrites an environment file after writing to it. Either mistake can lose outputs or other runner data.
 
-The rule `environment-file-redirect` reports a script that writes to `GITHUB_OUTPUT` or to another environment file of the runner in a way that loses data: without the `$` in front of the name, or with a `>` that empties the file after the script already wrote to it.
+Use the environment variable and append with `>>` when adding values.
+
+## Examples
 
 Example of **incorrect** code:
 
 ```yaml
 on: push
-
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      # ERROR: without a $ this writes a file named GITHUB_OUTPUT in the working directory
-      - id: version
-        run: echo "version=1.2.3" >> GITHUB_OUTPUT
-      # ERROR: the second > empties the file, so "a" is lost
-      - id: pair
-        run: |
+      - run: echo "version=1.2.3" >> GITHUB_OUTPUT
+      - run: |
           echo "a=1" >> "$GITHUB_OUTPUT"
           echo "b=2" > "$GITHUB_OUTPUT"
-      # OK: the variable, appended
-      - run: echo "c=3" >> "$GITHUB_OUTPUT"
-      # OK: each step has its own file, so a lone > is harmless
-      - run: echo "d=4" > "$GITHUB_OUTPUT"
+```
+
+Example of **correct** code:
+
+```yaml
+on: push
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "version=1.2.3" >> "$GITHUB_OUTPUT"
+      - run: |
+          echo "a=1" >> "$GITHUB_OUTPUT"
+          echo "b=2" >> "$GITHUB_OUTPUT"
 ```
 
 ## Further Reading

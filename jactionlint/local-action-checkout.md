@@ -4,19 +4,34 @@ Issue: -
 
 ## Description
 
-A local action is used before any step checks out the repository.
+A step uses a local action before the repository has been checked out in the same job. Local actions are loaded from the runner's workspace, so their metadata is unavailable until checkout completes.
 
-The rule `local-action-checkout` reports the first local action of a job that no checkout step precedes in the same job. A local action (`uses: ./.github/actions/foo`) is loaded from the workspace of the runner. When the repository has not been checked out yet, the step fails at run time with "Can't find 'action.yml'".
+Run `actions/checkout` before using the local action.
+
+## Examples
 
 Example of **incorrect** code:
 
 ```yaml
+on: push
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: ./.github/actions/foo
+      - uses: ./.github/actions/greet
       - uses: actions/checkout@v4
+```
+
+Example of **correct** code:
+
+```yaml
+on: push
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/greet
 ```
 
 ## Further Reading

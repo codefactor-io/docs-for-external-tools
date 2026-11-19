@@ -4,9 +4,11 @@ Issue: -
 
 ## Description
 
-Jobs depend on each other in a cycle.
+Jobs depend on each other in a cycle through `needs`. None of the jobs in the cycle can start because each is waiting for another.
 
-The rules `cyclic-job-needs`, `undefined-job-needs` and `duplicate-job-needs` report `needs:` lists that cannot work: jobs that need each other in a cycle, a needed job that does not exist and a job that is listed twice.
+Remove the circular dependency so the jobs can run in order.
+
+## Examples
 
 Example of **incorrect** code:
 

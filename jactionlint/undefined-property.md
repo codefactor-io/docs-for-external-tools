@@ -4,9 +4,11 @@ Issue: -
 
 ## Description
 
-An undefined variable or property is accessed in an expression.
+An expression refers to a context, variable, or property that is not defined. This is often caused by a misspelled name, such as `github.events` instead of `github.event`.
 
-The rules `undefined-property`, `undefined-function` and `invalid-function-call` (all in the `correctness` profile) report a context or property that does not exist, a function that does not exist, and a call of a built-in function with the wrong number or types of arguments.
+Check the name and use a property available in that context.
+
+## Examples
 
 Example of **incorrect** code:
 
@@ -16,19 +18,18 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      # Access undefined context
-      - run: echo '${{ unknown_context }}'
-      # Access undefined property of context
       - run: echo '${{ github.events }}'
-      # Calling undefined function (start's'With is correct)
-      - run: echo "${{ startWith('hello, world', 'lo,') }}"
-      # Wrong number of arguments
-      - run: echo "${{ startsWith('hello, world') }}"
-      # Wrong type of parameter
-      - run: echo "${{ startsWith('hello, world', github.event) }}"
-      # Function overloads can be handled properly. contains() has string version and array version
-      - run: echo "${{ contains('hello, world', 'lo,') }}"
-      - run: echo "${{ contains(github.event.issue.labels.*.name, 'enhancement') }}"
+```
+
+Example of **correct** code:
+
+```yaml
+on: push
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo '${{ github.event_name }}'
 ```
 
 ## Further Reading

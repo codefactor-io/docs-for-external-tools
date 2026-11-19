@@ -4,30 +4,40 @@ Issue: -
 
 ## Description
 
-A job ID is defined more than once.
+Two jobs use the same ID. Job IDs must be unique within a workflow and are compared without regard to case.
 
-A job ID that is defined twice is reported as `duplicate-key` (see [Job ID and step ID uniqueness](https://jactionlint.jdx.dev/checks#check-job-step-ids)): the parser finds the repeated key before this check runs and drops the second job. The rule `duplicate-job-id` of this check is meant for the same mistake, but a repeated job ID of a workflow file never reaches it.
+Give each job a different ID and update any references to it. Repeated job keys in workflow YAML are reported as `duplicate-key` before the `duplicate-job-id` check runs.
+
+## Examples
 
 Example of **incorrect** code:
 
 ```yaml
 on: push
 jobs:
-  prepare:
-    needs: [build]
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo 'prepare'
-  install:
-    needs: [prepare]
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo 'install'
   build:
-    needs: [install]
     runs-on: ubuntu-latest
     steps:
-      - run: echo 'build'
+      - run: echo hello
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo hello
+```
+
+Example of **correct** code:
+
+```yaml
+on: push
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo hello
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo hello
 ```
 
 ## Further Reading

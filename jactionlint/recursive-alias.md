@@ -4,32 +4,38 @@ Issue: -
 
 ## Description
 
-A YAML alias refers to itself.
+A YAML alias refers to its own anchor, directly or through another alias. This creates a recursive value that GitHub Actions cannot use.
 
-The rules `unused-anchor`, `recursive-alias` and `merge-key` report mistakes with YAML anchors and aliases in a workflow, and `yaml-syntax` reports an alias whose anchor is not defined.
+Remove the circular reference and use an alias only for a value that does not contain itself.
+
+## Examples
 
 Example of **incorrect** code:
 
 ```yaml
 on: push
-
 jobs:
   test:
-    services:
-      nginx:
-        image: nginx:latest
-        credentials: &credentials
-          # ERROR: Credentials are embedded directly in workflow
-          username: my-user-name
-          password: P@ssw0rd
-          # ERROR: Unexpected key 'email'
-          email: me@example.com
-      redis:
-        image: redis:latest
-        credentials: *credentials
     runs-on: ubuntu-latest
     steps:
-      - run: ./do_something.sh
+      - &recursive
+        run: echo hello
+        env: *recursive
+```
+
+Example of **correct** code:
+
+```yaml
+on: push
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo hello
+        env: &variables
+          MESSAGE: hello
+      - run: echo "$MESSAGE"
+        env: *variables
 ```
 
 ## Further Reading

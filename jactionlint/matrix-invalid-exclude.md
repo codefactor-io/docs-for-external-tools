@@ -1,12 +1,14 @@
-Pattern: Invalid matrix exclude
+Pattern: Invalid matrix `exclude` entry
 
 Issue: -
 
 ## Description
 
-An exclude entry of a matrix does not match the matrix.
+A matrix `exclude` entry contains a key or value that does not match the matrix. It therefore cannot exclude the intended job combination.
 
-The rules `matrix-duplicate-value` and `matrix-invalid-exclude` report a matrix that lists a value twice and an `exclude:` entry that matches nothing in the matrix.
+Use the matrix's actual axis names and values.
+
+## Examples
 
 Example of **incorrect** code:
 
@@ -16,16 +18,28 @@ jobs:
   test:
     strategy:
       matrix:
-        node: [10, 12, 14, 14]
-        os: [ubuntu-latest, macos-latest]
+        version: [18, 20]
         exclude:
-          - node: 13
-            os: ubuntu-latest
-          - node: 10
-            platform: ubuntu-latest
-    runs-on: ${{ matrix.os }}
+          - version: 19
+    runs-on: ubuntu-latest
     steps:
-      - run: echo ...
+      - run: echo hello
+```
+
+Example of **correct** code:
+
+```yaml
+on: push
+jobs:
+  test:
+    strategy:
+      matrix:
+        version: [18, 20]
+        exclude:
+          - version: 18
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo hello
 ```
 
 ## Further Reading

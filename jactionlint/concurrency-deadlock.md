@@ -4,22 +4,49 @@ Issue: -
 
 ## Description
 
-The concurrency group of a workflow is the same as the group of a local reusable workflow it calls, so GitHub detects a deadlock and cancels the run.
+A workflow and a local reusable workflow it calls use the same concurrency group. GitHub detects a deadlock and cancels the run.
 
-`concurrency-deadlock` (in the `correctness` profile) reports a workflow whose `concurrency:` group is the same as the group of a reusable workflow that it calls, so GitHub detects a deadlock and cancels the run.
+Use different concurrency groups for the calling and called workflows.
+
+## Examples
+
+Reusable workflow:
+
+```yaml
+# file: .github/workflows/build.yml
+on:
+  workflow_call:
+jobs:
+  build:
+    concurrency:
+      group: build
+      cancel-in-progress: true
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo hello
+```
 
 Example of **incorrect** code:
 
 ```yaml
 # file: .github/workflows/ci.yml
-# select: concurrency-deadlock
 on: push
-
-# ERROR: the called workflow has the same group
 concurrency:
-  group: ${{ github.workflow }}-${{ github.sha }}
+  group: build
   cancel-in-progress: true
+jobs:
+  build:
+    uses: ./.github/workflows/build.yml
+```
 
+Example of **correct** code:
+
+```yaml
+# file: .github/workflows/ci.yml
+on: push
+concurrency:
+  group: ci
+  cancel-in-progress: true
 jobs:
   build:
     uses: ./.github/workflows/build.yml

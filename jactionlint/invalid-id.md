@@ -1,12 +1,14 @@
-Pattern: Invalid ID
+Pattern: Invalid job or step ID
 
 Issue: -
 
 ## Description
 
-A job or step ID does not follow the naming convention.
+A job ID, step ID, or job ID referenced in `needs` does not follow the naming rules. IDs must start with a letter or `_` and contain only letters, digits, `-`, or `_`.
 
-The rule `invalid-id` reports a job ID or a step ID that does not follow the naming convention, and a job ID listed in `needs:` that does not.
+Rename the ID and update its references.
+
+## Examples
 
 Example of **incorrect** code:
 

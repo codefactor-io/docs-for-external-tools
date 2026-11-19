@@ -1,30 +1,37 @@
-Pattern: gh command without token
+Pattern: Missing token for `gh` command
 
 Issue: -
 
 ## Description
 
-A script runs the gh command although no GH_TOKEN or GITHUB_TOKEN reaches the step, so gh stops.
+A `run` script uses the GitHub CLI command `gh` without an authentication token. GitHub-hosted runners include the CLI, but it is not authenticated automatically.
 
-The rule `gh-without-token` reports a `run:` script that runs the `gh` command of GitHub CLI although no token reaches the step, so that `gh` stops. The GitHub-hosted runners have the GitHub CLI installed, but it is not logged in. It stops with `gh: To use GitHub CLI in a GitHub Actions workflow, set the GH_TOKEN environment variable` unless one of `GH_TOKEN`, `GITHUB_TOKEN`, `GH_ENTERPRISE_TOKEN` or `GITHUB_ENTERPRISE_TOKEN` is in its environment.
+Set `GH_TOKEN`, `GITHUB_TOKEN`, `GH_ENTERPRISE_TOKEN`, or `GITHUB_ENTERPRISE_TOKEN` in the step, job, or workflow environment. Commands such as `gh --version` and `gh help` do not need a token.
+
+## Examples
 
 Example of **incorrect** code:
 
 ```yaml
 on: push
-
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      # ERROR: gh stops because neither GH_TOKEN nor GITHUB_TOKEN is set
       - run: gh pr list --state open
-      # OK: the token is set for the step
+```
+
+Example of **correct** code:
+
+```yaml
+on: push
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
       - run: gh pr list --state open
         env:
           GH_TOKEN: ${{ github.token }}
-      # OK: gh --version and gh help need no token
-      - run: gh --version
 ```
 
 ## Further Reading
