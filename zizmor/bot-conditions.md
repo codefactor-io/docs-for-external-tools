@@ -4,20 +4,36 @@ Issue: -
 
 ## Description
 
-A condition trusts a bot by its actor name, which an attacker can spoof.
+A condition uses `github.actor` to identify a trusted bot. This value identifies the actor associated with the triggering activity, not necessarily the author of the pull request. A bot's involvement does not make the rest of the branch trustworthy.
 
-However, this condition is spoofable: `github.actor` refers to the last actor to perform an "action" on the triggering context, and not necessarily the actor actually causing the trigger. An attacker can take advantage of this discrepancy to create a PR where the `HEAD` commit has `github.actor == 'dependabot[bot]'` but the rest of the branch history contains attacker-controlled code, bypassing the actor check.
+For checks that depend on who opened a pull request, use `github.event.pull_request.user.login` instead.
+
+## Examples
 
 Example of **incorrect** code:
 
 ```yaml
-if: github.actor == 'dependabot[bot]'
+on: pull_request
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    if: github.actor == 'dependabot[bot]'
+    steps:
+      - run: echo 'Pull request opened by Dependabot'
 ```
 
 Example of **correct** code:
 
 ```yaml
-if: github.event.pull_request.user.login == 'dependabot[bot]'
+on: pull_request
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.user.login == 'dependabot[bot]'
+    steps:
+      - run: echo 'Pull request opened by Dependabot'
 ```
 
 ## Further Reading

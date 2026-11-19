@@ -1,31 +1,47 @@
-Pattern: Hardcoded container password
+Pattern: Hardcoded container registry password
 
 Issue: -
 
 ## Description
 
-A password for a container registry is written directly in the workflow.
+A container registry password is written directly in the workflow. Anyone who can read the file or its Git history can obtain the password.
 
-Use [encrypted secrets](https://docs.github.com/en/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions) instead of hardcoded credentials.
+Store the password as a GitHub Actions secret and reference it through the `secrets` context.
+
+## Examples
 
 Example of **incorrect** code:
 
 ```yaml
-container:
-  image: registry.example.com/app
-  credentials:
-    username: user
-    password: hackme
+on: push
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    container:
+      image: registry.example.com/app
+      credentials:
+        username: user
+        password: hackme
+    steps:
+      - run: echo 'Running in a container'
 ```
 
 Example of **correct** code:
 
 ```yaml
-container:
-  image: registry.example.com/app
-  credentials:
-    username: user
-    password: ${{ secrets.REGISTRY_PASSWORD }}
+on: push
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    container:
+      image: registry.example.com/app
+      credentials:
+        username: user
+        password: ${{ secrets.REGISTRY_PASSWORD }}
+    steps:
+      - run: echo 'Running in a container'
 ```
 
 ## Further Reading

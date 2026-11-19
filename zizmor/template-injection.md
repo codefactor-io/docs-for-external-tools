@@ -4,24 +4,42 @@ Issue: -
 
 ## Description
 
-An attacker-controllable value is expanded with ${{ }} into a script or another place where it runs as code.
+A script embeds untrusted input through a `${{ ... }}` expression. GitHub Actions substitutes the value before the script runs, so input such as an issue title can become executable shell code.
 
-GitHub Actions allows workflows to define template expansions, which occur within special `${{ ... }}` delimiters. These expansions happen before workflow and job execution, meaning the expansion of a given expression appears verbatim in whatever context it was performed in.
+Pass the value through an environment variable and quote the shell variable when using it. Do not interpolate the environment variable back into the script with `${{ ... }}`.
+
+## Examples
 
 Example of **incorrect** code:
 
 ```yaml
-- name: Check title
-  run: echo "${{ github.event.issue.title }}"
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check title
+        run: echo "${{ github.event.issue.title }}"
 ```
 
 Example of **correct** code:
 
 ```yaml
-- name: Check title
-  run: echo "$ISSUE_TITLE"
-  env:
-    ISSUE_TITLE: ${{ github.event.issue.title }}
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check title
+        run: echo "$ISSUE_TITLE"
+        env:
+          ISSUE_TITLE: ${{ github.event.issue.title }}
 ```
 
 ## Further Reading

@@ -1,16 +1,20 @@
-Pattern: All secrets inherited
+Pattern: Use of `secrets: inherit`
 
 Issue: -
 
 ## Description
 
-A reusable workflow is called with secrets: inherit, so it receives every secret of the caller.
+A reusable workflow is called with `secrets: inherit`, giving it access to all secrets available to the caller. This makes it harder to see which secrets are needed and exposes more credentials if the called workflow is compromised.
 
-[Reusable workflows](https://docs.github.com/en/actions/sharing-automations/reusing-workflows) can be given secrets by their calling workflow either explicitly, or in a blanket fashion with secrets: inherit. The latter should almost never be used, as it makes it violates the [Principle of Least Authority](https://en.wikipedia.org/wiki/Principle_of_least_privilege) and makes it impossible to determine which exact secrets a reusable workflow was executed with.
+Pass the required secrets explicitly instead.
+
+## Examples
 
 Example of **incorrect** code:
 
 ```yaml
+on: push
+
 jobs:
   deploy:
     uses: ./.github/workflows/deploy.yml
@@ -20,6 +24,8 @@ jobs:
 Example of **correct** code:
 
 ```yaml
+on: push
+
 jobs:
   deploy:
     uses: ./.github/workflows/deploy.yml

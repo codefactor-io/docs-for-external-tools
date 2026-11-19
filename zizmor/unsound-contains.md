@@ -1,23 +1,39 @@
-Pattern: Bypassable contains() check
+Pattern: Bypassable `contains()` check
 
 Issue: -
 
 ## Description
 
-A contains() condition can be bypassed when an attacker controls the context it searches.
+A condition uses `contains()` on a string to check whether a value is allowed. String matching accepts substrings, not just complete entries. A branch named `mai`, for example, matches the string `refs/heads/main refs/heads/develop`.
 
-However, this condition will not only evaluate to `true` if either `refs/heads/main` or `refs/heads/develop` is passed, but also for substrings of those values. For example, if someone pushes to a branch named `mai`, then `github.ref` would contain the string `refs/heads/mai` and the job would also execute.
+Use `contains()` with an array to check for an exact match instead.
+
+## Examples
 
 Example of **incorrect** code:
 
 ```yaml
-if: contains('refs/heads/main refs/heads/develop', github.ref)
+on: push
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    if: contains('refs/heads/main refs/heads/develop', github.ref)
+    steps:
+      - run: echo 'Allowed branch'
 ```
 
 Example of **correct** code:
 
 ```yaml
-if: contains(fromJSON('["refs/heads/main", "refs/heads/develop"]'), github.ref)
+on: push
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    if: contains(fromJSON('["refs/heads/main", "refs/heads/develop"]'), github.ref)
+    steps:
+      - run: echo 'Allowed branch'
 ```
 
 ## Further Reading

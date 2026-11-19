@@ -4,22 +4,38 @@ Issue: -
 
 ## Description
 
-A container image is not pinned by a tag other than latest or by a SHA-256 digest.
+A container image has no version tag or uses `latest`, so the image can change between workflow runs. Other tags can also be reassigned; zizmor reports those in pedantic mode.
 
-When image references are unpinned or are pinned to a mutable tag, the workflow is at risk because the image used will be unpredictable over time. Changes made to the OCI registry used to source the image may result in untrusted images gaining access to your workflow.
+Pin the image to its SHA-256 digest for a stable reference to the intended image.
+
+## Examples
 
 Example of **incorrect** code:
 
 ```yaml
-container:
-  image: node:latest
+on: push
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    container:
+      image: registry.example.com/app:latest
+    steps:
+      - run: echo 'Running in a container'
 ```
 
 Example of **correct** code:
 
 ```yaml
-container:
-  image: node:24.11.0
+on: push
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    container:
+      image: registry.example.com/app@sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b
+    steps:
+      - run: echo 'Running in a container'
 ```
 
 ## Further Reading

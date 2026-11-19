@@ -1,25 +1,47 @@
-Pattern: Secret bypasses redaction
+Pattern: Secret value not reliably redacted
 
 Issue: -
 
 ## Description
 
-A secret is used in a way that GitHub Actions cannot redact from the logs.
+A workflow extracts part of a secret, such as a field from a JSON value. GitHub Actions masks the complete stored secret, but it may not recognize the extracted value in logs.
 
-This allows the Actions runner to redact the secret values from the job logs, as it knows the exact string value of each secret.
+Store sensitive values as separate secrets and reference them directly so the runner can mask their exact values.
+
+## Examples
 
 Example of **incorrect** code:
 
 ```yaml
-env:
-  PASSWORD: ${{ fromJSON(secrets.CREDENTIALS).password }}
+on: push
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - run: ./deploy.sh
+        env:
+          PASSWORD: ${{ fromJSON(secrets.CREDENTIALS).password }}
 ```
 
 Example of **correct** code:
 
 ```yaml
-env:
-  PASSWORD: ${{ secrets.PASSWORD }}
+on: push
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - run: ./deploy.sh
+        env:
+          PASSWORD: ${{ secrets.PASSWORD }}
 ```
 
 ## Further Reading

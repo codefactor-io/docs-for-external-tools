@@ -1,31 +1,39 @@
-Pattern: Credentials persisted by checkout
+Pattern: Credentials persisted by `actions/checkout`
 
 Issue: -
 
 ## Description
 
-The git credentials of actions/checkout are kept on disk, where later steps or uploaded artifacts can leak them.
+`actions/checkout` saves Git credentials on disk by default. Later steps can read them, and uploading files that contain them can expose the token.
 
-By default, using [actions/checkout](https://github.com/actions/checkout) causes a credential to be persisted on disk. Versions below v6.0.0 store the credential directly in the checked-out repo's `.git/config`, while v6.0.0 and later store it under `$RUNNER_TEMP`.
+Set `persist-credentials: false` unless later Git commands need authentication. Versions before v6 store the credentials in `.git/config`; v6 and later store them under `$RUNNER_TEMP`.
+
+## Examples
 
 Example of **incorrect** code:
 
 ```yaml
-- uses: actions/checkout@v5
-- uses: actions/upload-artifact@v5
-  with:
-    path: .
+on: push
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
 ```
 
 Example of **correct** code:
 
 ```yaml
-- uses: actions/checkout@v5
-  with:
-    persist-credentials: false
-- uses: actions/upload-artifact@v5
-  with:
-    path: .
+on: push
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
 ```
 
 ## Further Reading

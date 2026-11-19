@@ -4,20 +4,34 @@ Issue: -
 
 ## Description
 
-An action reference closely resembles a popular action but is owned by a different account.
+An action reference resembles a popular action but names a different owner or repository. For example, `action/checkout` is not `actions/checkout`. An attacker can register a misspelled name to run their code in workflows that use it.
 
-Typosquatting attacks rely on a developer mistyping or copy-pasting a slightly wrong name (`action/checkout` instead of `actions/checkout`, `dokcer/login-action` instead of `docker/login-action`). If an attacker registers the misspelled namespace, the workflow or pre-commit hook will fetch and execute their code.
+Check the action's official repository and correct the `uses` reference.
+
+## Examples
 
 Example of **incorrect** code:
 
 ```yaml
-- uses: action/checkout@v5
+on: push
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: action/checkout@v5
 ```
 
 Example of **correct** code:
 
 ```yaml
-- uses: actions/checkout@v5
+on: push
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
 ```
 
 ## Further Reading

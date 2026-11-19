@@ -1,26 +1,47 @@
-Pattern: Whole secrets context exposed
+Pattern: Exposure of entire `secrets` context
 
 Issue: -
 
 ## Description
 
-The entire secrets context is passed into the runner instead of the secrets the step needs.
+A workflow passes the entire `secrets` context to the runner, for example with `toJSON(secrets)`. This exposes secrets that the step does not need and increases the impact of a compromised action or script.
 
-This allows the Actions runner to only expose the secrets actually used by the workflow to the job environment.
+Reference only the individual secrets needed by the step.
+
+## Examples
 
 Example of **incorrect** code:
 
 ```yaml
-env:
-  SECRETS: ${{ toJSON(secrets) }}
+on: push
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - run: ./deploy.sh
+        env:
+          SECRETS: ${{ toJSON(secrets) }}
 ```
 
 Example of **correct** code:
 
 ```yaml
-env:
-  SECRET_ONE: ${{ secrets.SECRET_ONE }}
-  SECRET_TWO: ${{ secrets.SECRET_TWO }}
+on: push
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - run: ./deploy.sh
+        env:
+          DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
 ```
 
 ## Further Reading

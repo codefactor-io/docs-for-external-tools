@@ -1,24 +1,40 @@
-Pattern: Always-true if condition
+Pattern: Always-true `if` condition
 
 Issue: -
 
 ## Description
 
-An if: condition is always true because of the characters around ${{ }}.
+An `if` condition contains text or whitespace outside its `${{ ... }}` expression. GitHub Actions treats the result as a nonempty string, which is true even when the expression evaluates to `false`.
 
-This happens because YAML's "block" scalars include a trailing newline by default, which is left outside of the GitHub Actions expression. This results in an expansion like `'false\n'` instead of `'false'`, which GitHub Actions interprets as a truthy value.
+For example, YAML's `|` block scalar adds a trailing newline outside the expression. Write the condition without `${{ ... }}` to avoid this problem.
+
+## Examples
 
 Example of **incorrect** code:
 
 ```yaml
-if: |
-  ${{ github.event_name == 'push' }}
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    if: |
+      ${{ github.event_name == 'push' }}
+    steps:
+      - run: echo 'Only on push'
 ```
 
 Example of **correct** code:
 
 ```yaml
-if: github.event_name == 'push'
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+    steps:
+      - run: echo 'Only on push'
 ```
 
 ## Further Reading

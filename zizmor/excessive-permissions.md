@@ -1,12 +1,14 @@
-Pattern: Overly broad permissions
+Pattern: Overly broad token permissions
 
 Issue: -
 
 ## Description
 
-The workflow or a job grants broader GITHUB_TOKEN permissions than it needs.
+A workflow or job grants `GITHUB_TOKEN` more permissions than it needs. If an action or script is compromised, those permissions increase the damage it can cause. Workflow-level permissions are inherited by jobs unless they override them.
 
-Users frequently over-scope their workflow and job permissions, or set broad workflow-level permissions without realizing that all jobs inherit those permissions.
+Set workflow permissions to `{}` and grant only the required permissions to individual jobs.
+
+## Examples
 
 Example of **incorrect** code:
 
@@ -16,13 +18,10 @@ on: push
 permissions: write-all
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - run: make build
   test:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v5
       - run: make test
 ```
 
@@ -31,17 +30,15 @@ Example of **correct** code:
 ```yaml
 on: push
 
-permissions:
-  contents: read
+permissions: {}
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - run: make build
   test:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
+      - uses: actions/checkout@v5
       - run: make test
 ```
 

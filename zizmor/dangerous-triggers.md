@@ -4,9 +4,11 @@ Issue: -
 
 ## Description
 
-The workflow uses a trigger such as pull_request_target, workflow_run or issue_comment that is very hard to use securely.
+Triggers such as `pull_request_target`, `workflow_run`, and `issue_comment` run in the target repository's context and can be influenced by untrusted users. Checking out or executing attacker-controlled code in that context can expose repository secrets or write permissions.
 
-These triggers are dangerous because they run in the context of the target repository rather than the fork repository, while also being typically triggerable by the latter. This can lead to attacker controlled code execution or unexpected action runs with context controlled by a malicious fork.
+Use `pull_request` for ordinary pull request checks. If a privileged trigger is necessary, keep untrusted code and inputs away from privileged operations.
+
+## Examples
 
 Example of **incorrect** code:
 
@@ -14,7 +16,7 @@ Example of **incorrect** code:
 on: pull_request_target
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -29,7 +31,7 @@ Example of **correct** code:
 on: pull_request
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5

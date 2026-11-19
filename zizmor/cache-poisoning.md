@@ -4,9 +4,11 @@ Issue: -
 
 ## Description
 
-A release workflow restores a cache that an attacker may have poisoned.
+A release workflow restores cached files that an attacker may have modified in another workflow. Using those files can compromise the release. Privileged workflows that process untrusted code can also poison caches when cache writes are enabled.
 
-Potentially compromised writes to caches, via privileged triggers (see [dangerous-triggers](https://docs.zizmor.sh/audits/#dangerous-triggers)) with jobs that explicitly enable cache-mode: write or cache-mode: write-only.
+Disable caching in release jobs with `cache-mode: none`, or disable cache restoration in each cache-aware action. Avoid cache writes from jobs that run untrusted code.
+
+## Examples
 
 Example of **incorrect** code:
 
@@ -19,6 +21,9 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
       - uses: actions/setup-node@v5
         with:
           cache: npm
@@ -35,10 +40,14 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    cache-mode: none
     steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
       - uses: actions/setup-node@v5
         with:
-          package-manager-cache: false
+          cache: npm
       - run: npm publish
 ```
 

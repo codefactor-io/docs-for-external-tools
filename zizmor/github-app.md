@@ -1,32 +1,47 @@
-Pattern: Dangerous GitHub App token
+Pattern: Unsafe GitHub App token configuration
 
 Issue: -
 
 ## Description
 
-A GitHub App installation token is requested with broader access than the workflow needs.
+An `actions/create-github-app-token` step requests excessive access or disables token revocation. Setting `owner` without `repositories` grants access to every repository available to the installation. Omitting explicit `permission-*` inputs requests all available installation permissions.
 
-GitHub Apps provide an alternative authentication mechanism to GitHub Actions' built-in `secrets.GITHUB_TOKEN`. Typically, users request an installation token for a GitHub App via [actions/create-github-app-token](https://github.com/actions/create-github-app-token) and then use that token where the default `secrets.GITHUB_TOKEN` would have been used.
+Limit the token to the repositories and permissions the job needs, and leave automatic revocation enabled.
+
+## Examples
 
 Example of **incorrect** code:
 
 ```yaml
-- uses: actions/create-github-app-token@v2
-  with:
-    app-id: ${{ vars.APP_ID }}
-    private-key: ${{ secrets.APP_PRIVATE_KEY }}
-    owner: my-org
+on: push
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ vars.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+          owner: my-org
 ```
 
 Example of **correct** code:
 
 ```yaml
-- uses: actions/create-github-app-token@v2
-  with:
-    app-id: ${{ vars.APP_ID }}
-    private-key: ${{ secrets.APP_PRIVATE_KEY }}
-    repositories: my-repo
-    permission-contents: read
+on: push
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ vars.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+          owner: my-org
+          repositories: my-repo
+          permission-contents: read
 ```
 
 ## Further Reading
